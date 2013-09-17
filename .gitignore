@@ -1,1 +1,7 @@
 *~
+*.csproj
+*.config
+*.cs
+bin/
+obj/
+*.user
