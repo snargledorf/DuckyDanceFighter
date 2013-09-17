@@ -16,4 +16,6 @@ body {
 	height:40em;
 	width:30em;
 	margin:auto;
+    border-radius:.5em;
+    border: solid #000 .25em;
 }
