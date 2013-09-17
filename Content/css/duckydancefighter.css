@@ -18,4 +18,10 @@ body {
 	margin:auto;
     border-radius:.5em;
     border: solid #000 .25em;
+    position:relative;
+}
+
+#ducky {
+    position:absolute;
+    bottom:0;
 }
