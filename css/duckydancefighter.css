@@ -1,0 +1,19 @@
+body {
+	background-color:#2E7EC3;
+	color:#FFF;
+}
+
+#title {
+	text-align:center;
+}
+
+.red {
+	color:#F00;
+}
+
+#game_area {
+	background-color:#000;
+	height:50em;
+	width:30em;
+	margin:auto;
+}
