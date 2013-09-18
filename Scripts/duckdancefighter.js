@@ -6,6 +6,7 @@ var canvas;
 var stage;
 var ducky;
 var ducky_bullets = [];
+var barneys = [];
 
 var keys = {};
 
@@ -21,32 +22,30 @@ $(document).ready(function (e) {
 
 function init() {
     // Grab the canvas and create the stage
-    canvas = document.getElementById('game_canvas');
-    stage = new createjs.Stage(canvas);
+    if (canvas == null) {
+        canvas = document.getElementById('game_canvas');
+    }
+    if (stage == null) {
+        stage = new createjs.Stage(canvas);
+    }
+    else
+    {
+        stage.removeAllChildren();
+    }
+
+    ducky_bullets.splice(0, ducky_bullets.length);
+    barneys.splice(0, barneys.length);
+    lastBarneySpawn = 50;
+
     drawDucky();
     startGameLoop();
 }
 
 function drawDucky() {
 
-    var spriteSheetData = {
-        animations: {
-            dance:  [0, 26, 'dance', 4]
-        },
-        images: ['Content/images/ducky_sprite_map.bmp'],
-        frames: {
-            regX: 0,
-            height: 100,
-            width: 100,
-            count: 27
-        }
-    };
+    ducky = createDucky();
 
-    var spriteSheet = new createjs.SpriteSheet(spriteSheetData);
-
-    ducky = new createjs.BitmapAnimation(spriteSheet);
-
-    ducky.y = canvas.height - spriteSheetData.frames.height;
+    ducky.y = canvas.height - 100;
     ducky.x = (canvas.width - 100) / 2;
 
     ducky.gotoAndPlay('dance');
@@ -55,6 +54,7 @@ function drawDucky() {
 }
 
 function startGameLoop() {
+    createjs.Ticker.removeAllListeners();
     createjs.Ticker.setFPS(FPS);
     createjs.Ticker.addListener(gameLoop);
 }
@@ -64,6 +64,7 @@ function gameLoop(e) {
     stage.update();
 }
 
+var lastBarneySpawn = 50;
 function update() {
     if (keys[37]) { // left
         moveDuckyLeft();
@@ -76,6 +77,15 @@ function update() {
     }
 
     updateBullets();
+
+    if (lastBarneySpawn-- <= 0) {
+        spawnBarney();
+        lastBarneySpawn = 20;
+    }
+
+    updateBarneys();
+    
+    checkForCollisions();
 }
 
 var move_speed = 10;
@@ -88,9 +98,9 @@ function moveDuckyRight() {
     var new_left = (ducky.x + 100 + move_speed) > canvas.width ? canvas.width - 100 : ducky.x + move_speed;
     ducky.x = new_left;
 }
+
 var lastBulletShotCount = 0;
 function shootDucky() {
-
     if (lastBulletShotCount > 0) {
         lastBulletShotCount--;
         return;
@@ -98,6 +108,21 @@ function shootDucky() {
 
     lastBulletShotCount = 10;
 
+    var bullet = createDucky();   
+
+    bullet.y = ducky.y;
+    bullet.x = ducky.x + (75 / 2);
+    bullet.scaleX = .25;
+    bullet.scaleY = .25;
+
+    bullet.gotoAndPlay('dance');
+
+    stage.addChild(bullet);
+
+    ducky_bullets.push(bullet);
+}
+
+function createDucky() {
     var spriteSheetData = {
         animations: {
             dance: [0, 26, 'dance', 4]
@@ -113,18 +138,7 @@ function shootDucky() {
 
     var spriteSheet = new createjs.SpriteSheet(spriteSheetData);
 
-    var bullet = new createjs.BitmapAnimation(spriteSheet);
-
-    bullet.y = ducky.y;
-    bullet.x = ducky.x + (75 / 2);
-    bullet.scaleX = .25;
-    bullet.scaleY = .25;
-
-    bullet.gotoAndPlay('dance');
-
-    stage.addChild(bullet);
-
-    ducky_bullets.push(bullet);
+    return new createjs.BitmapAnimation(spriteSheet);
 }
 
 function updateBullets() {
@@ -137,10 +151,65 @@ function updateBullets() {
 }
 
 function removeBullet(bullet) {
-    var index = ducky_bullets.indexOf(bullet);
-    if (index >= 0) {
-        ducky_bullets.splice(index, 1);
-    }
-
+    removeFromArray(ducky_bullets, bullet);
     stage.removeChild(bullet);
+}
+
+function spawnBarney() {
+    var barney = new createjs.Bitmap('Content/images/barney.png');
+
+    var randomX = (canvas.width - barney.image.width) * Math.random();
+
+    barney.y = -barney.image.height;
+    barney.x = randomX;
+
+    stage.addChild(barney);
+
+    barneys.push(barney);
+}
+
+function updateBarneys() {
+    barneys.forEach(function (barney) {
+        barney.y += 7;
+        if (barney.y > canvas.height) {
+            removeBarney(barney);
+        }
+    });
+}
+
+function checkForCollisions() {
+    barneys.forEach(function (barney) {
+
+        var ducky_pt = ducky.localToLocal(50, 0, barney);
+        if (barney.hitTest(ducky_pt.x, ducky_pt.y)) {
+            gameOver();
+            return false;
+        }
+
+        ducky_bullets.forEach(function (bullet) {
+            var pt = bullet.localToLocal(0, 0, barney);
+
+            if (barney.hitTest(pt.x, pt.y)) {
+                removeBarney(barney);
+                removeBullet(bullet);
+            }
+        });
+    });
+}
+
+function removeBarney(barney) {
+    removeFromArray(barneys, barney);
+    stage.removeChild(barney);
+}
+
+function removeFromArray(array, item) {
+    var index = array.indexOf(item);
+    if (index >= 0) {
+        array.splice(index, 1);
+    }
+}
+
+function gameOver() {
+    alert("GAME OVER!");
+    init();
 }
