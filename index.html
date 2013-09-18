@@ -17,20 +17,21 @@
 	</head>
 	<body>
     	<h1 id="title">Ducky Dance Fighter <span class="red">EXTREME!</span></h1>
-    	
-    	<div id="game_area">
-    		<img id="ducky" src="Content/images/ducky.gif" />
-    	</div>
+
+        <div id="game_area">
+            <canvas id="game_canvas" width="480" height="700"></canvas>
+        </div>
 
         <audio src="Content/audio/death-scream_bloody_gore.mp3" loop autoplay>
             <p>HTML5 audio not supported</p>
         </audio>
-    			
 		
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 		<script src="Scripts/jquery-2.0.3.js"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="Scripts/bootstrap.min.js"></script>
+
+        <script src="http://code.createjs.com/easeljs-0.6.1.min.js"></script>
                 
         <script src="Scripts/duckdancefighter.js"></script>
 	</body>

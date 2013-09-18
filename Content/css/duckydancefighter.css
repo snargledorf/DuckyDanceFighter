@@ -12,13 +12,7 @@ body {
 }
 
 #game_area {
-	background-color:#FFF;
-	height:40em;
-	width:30em;
-	margin:auto;
-    border-radius:.5em;
-    border: solid #000 .25em;
-    position:relative;
+    text-align:center;
 }
 
 #ducky {
