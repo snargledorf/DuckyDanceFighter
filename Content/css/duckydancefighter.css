@@ -1,6 +1,6 @@
 body {
-	background-color:#2E7EC3;
-	color:#FFF;
+	background-color:skyblue;
+	color:white;
 }
 
 #title {
@@ -8,11 +8,17 @@ body {
 }
 
 .red {
-	color:#F00;
+	color:red;
 }
 
 #game_area {
     text-align:center;
+}
+
+#game_canvas {
+    background:white;
+    border:solid black 5px;
+    border-radius:5px;
 }
 
 #ducky {
