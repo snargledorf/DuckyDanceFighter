@@ -33,8 +33,9 @@ function init() {
         stage.removeAllChildren();
     }
 
-    ducky_bullets.splice(0, ducky_bullets.length);
-    barneys.splice(0, barneys.length);
+    keys = {};
+    ducky_bullets.length = 0;
+    barneys.length = 0;
     lastBarneySpawn = 50;
 
     drawDucky();
