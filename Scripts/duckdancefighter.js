@@ -73,7 +73,7 @@ function update() {
     if (keys[39]) { // right
         moveDuckyRight();
     }
-    if (keys[32]) { // space
+    if (keys[83]) { // 's'
         shootDucky();
     }
 
