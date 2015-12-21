@@ -332,6 +332,6 @@ function removeFromArray(array, item) {
 }
 
 function gameOver() {
-    //alert("GAME OVER!");
+    alert("GAME OVER!");
     init();
 }
