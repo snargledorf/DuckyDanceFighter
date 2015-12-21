@@ -257,16 +257,18 @@ function shouldSpawnBarney() {
 }
 
 function checkForCollisions() {
+    // Adjust positions to make collision closer to the images
+    // No science to these numbers, determined by "feel"    
     barneys.forEach(function (barney) {
         if (checkForCollision(
-                ducky.x, 
+                ducky.x + 15,
                 ducky.y, 
-                ducky_width, 
-                ducky_height, 
-                barney.x, 
-                barney.y, 
-                barney.image.width, 
-                barney.image.height)) {
+                ducky_width - 30, 
+                ducky_height - 20,
+                barney.x + 15, 
+                barney.y + 20, 
+                barney.image.width - 30, 
+                barney.image.height - 40)) {
             gameOver();
             return false;
         }
@@ -277,10 +279,10 @@ function checkForCollisions() {
                     bullet.y, 
                     bullet_width, 
                     bullet_height, 
-                    barney.x, 
-                    barney.y, 
-                    barney.image.width, 
-                    barney.image.height)) {
+                    barney.x + 15, 
+                    barney.y + 20, 
+                    barney.image.width - 30, 
+                    barney.image.height - 40)) {
                 removeBarney(barney);                
                 removeBullet(bullet);
                 addBarneyKill();
