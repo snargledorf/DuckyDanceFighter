@@ -7,6 +7,7 @@ var stage;
 var ducky;
 var ducky_bullets = [];
 var barneys = [];
+var isPaused = false;
 
 var keys = {};
 
@@ -67,6 +68,14 @@ function gameLoop(e) {
 
 var lastBarneySpawn = 50;
 function update() {
+    if (keys[80]) { // 'p'
+        isPaused = !isPaused;
+    }
+
+    if (isPaused) {
+        return;
+    }
+
     if (keys[37]) { // left
         moveDuckyLeft();
     }
